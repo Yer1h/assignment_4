@@ -3,35 +3,42 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        WeightedGraph<String> graph = new WeightedGraph<>();
+        MyGraph<String> graph = new MyGraph<>();
 
-        Vertex<String> v1 = new Vertex<>("New York");
-        Vertex<String> v2 = new Vertex<>("Los Angeles");
-        Vertex<String> v3 = new Vertex<>("Chicago");
-        Vertex<String> v4 = new Vertex<>("Houston");
-        Vertex<String> v5 = new Vertex<>("Phoenix");
+        Vertex<String> newYork = new Vertex<>("New York");
+        Vertex<String> losAngeles = new Vertex<>("Los Angeles");
+        Vertex<String> chicago = new Vertex<>("Chicago");
+        Vertex<String> houston = new Vertex<>("Houston");
+        Vertex<String> phoenix = new Vertex<>("Phoenix");
 
-        graph.addVertex(v1);
-        graph.addVertex(v2);
-        graph.addVertex(v3);
-        graph.addVertex(v4);
-        graph.addVertex(v5);
+        graph.addVertex(newYork);
+        graph.addVertex(losAngeles);
+        graph.addVertex(chicago);
+        graph.addVertex(houston);
+        graph.addVertex(phoenix);
 
-        graph.addEdge(v1, v2, 4.0);
-        graph.addEdge(v1, v3, 1.0);
-        graph.addEdge(v2, v4, 1.0);
-        graph.addEdge(v3, v4, 5.0);
-        graph.addEdge(v4, v5, 3.0);
+        graph.addBidirectionalEdge(newYork, losAngeles, 4.0);
+        graph.addBidirectionalEdge(newYork, chicago, 1.0);
+        graph.addBidirectionalEdge(losAngeles, houston, 1.0);
+        graph.addBidirectionalEdge(chicago, houston, 5.0);
+        graph.addBidirectionalEdge(houston, phoenix, 3.0);
 
+        System.out.println("BFS starting from New York:");
         BreadthFirstSearch<String> bfs = new BreadthFirstSearch<>();
-        System.out.println("BFS starting from vertex New York:");
-        bfs.bfs(graph, v1);
+        bfs.bfs(graph, newYork);
+        System.out.println();
+
+        System.out.println("DFS starting from New York:");
+        DepthFirstSearch<String> dfs = new DepthFirstSearch<>(graph, newYork);
+        for (Vertex<String> v : dfs.pathTo(phoenix)) {
+            System.out.print(v.getData() + " ");
+        }
         System.out.println();
 
         DijkstraSearch<String> dijkstra = new DijkstraSearch<>();
-        dijkstra.dijkstra(graph, v1);
+        dijkstra.dijkstra(graph, newYork);
         System.out.println("Dijkstra's shortest path from New York to Phoenix:");
-        List<Vertex<String>> path = dijkstra.getShortestPath(v5);
+        List<Vertex<String>> path = dijkstra.getShortestPath(phoenix);
         path.forEach(vertex -> System.out.print(vertex.getData() + " "));
     }
 }

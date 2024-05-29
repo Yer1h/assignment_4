@@ -6,59 +6,38 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import java.util.*;
+
 public class DijkstraSearch<V> {
-    private final Map<Vertex<V>, Integer> distances = new HashMap<>();
-    private final Map<Vertex<V>, Vertex<V>> previousVertices = new HashMap<>();
-    private final PriorityQueue<VertexDistancePair<V>> priorityQueue;
+    private final Map<Vertex<V>, Double> distances = new HashMap<>();
+    private final Map<Vertex<V>, Vertex<V>> previous = new HashMap<>();
+    private final PriorityQueue<Vertex<V>> priorityQueue = new PriorityQueue<>(Comparator.comparing(distances::get));
 
-    public DijkstraSearch() {
-        this.priorityQueue = new PriorityQueue<>(Comparator.comparingInt(VertexDistancePair::getDistance));
-    }
-
-    public void dijkstra(WeightedGraph<V> graph, Vertex<V> start) {
-        distances.put(start, 0);
-        priorityQueue.add(new VertexDistancePair<>(start, 0));
+    public void dijkstra(WeightedGraph<V> graph, Vertex<V> source) {
+        distances.put(source, 0.0);
+        priorityQueue.add(source);
 
         while (!priorityQueue.isEmpty()) {
-            Vertex<V> current = priorityQueue.poll().getVertex();
+            Vertex<V> current = priorityQueue.poll();
 
             for (Edge<V> edge : graph.getAdjVertices(current)) {
                 Vertex<V> neighbor = edge.getDestination();
-                int newDist = distances.get(current) + edge.getWeight().intValue();
-
-                if (newDist < distances.getOrDefault(neighbor, Integer.MAX_VALUE)) {
+                double newDist = distances.get(current) + edge.getWeight();
+                if (newDist < distances.getOrDefault(neighbor, Double.POSITIVE_INFINITY)) {
                     distances.put(neighbor, newDist);
-                    previousVertices.put(neighbor, current);
-                    priorityQueue.add(new VertexDistancePair<>(neighbor, newDist));
+                    previous.put(neighbor, current);
+                    priorityQueue.add(neighbor);
                 }
             }
         }
     }
 
-    public List<Vertex<V>> getShortestPath(Vertex<V> end) {
-        List<Vertex<V>> path = new ArrayList<>();
-        for (Vertex<V> at = end; at != null; at = previousVertices.get(at)) {
+    public List<Vertex<V>> getShortestPath(Vertex<V> destination) {
+        List<Vertex<V>> path = new LinkedList<>();
+        for (Vertex<V> at = destination; at != null; at = previous.get(at)) {
             path.add(at);
         }
         Collections.reverse(path);
         return path;
-    }
-}
-
-class VertexDistancePair<V> {
-    private final Vertex<V> vertex;
-    private final int distance;
-
-    public VertexDistancePair(Vertex<V> vertex, int distance) {
-        this.vertex = vertex;
-        this.distance = distance;
-    }
-
-    public Vertex<V> getVertex() {
-        return vertex;
-    }
-
-    public int getDistance() {
-        return distance;
     }
 }

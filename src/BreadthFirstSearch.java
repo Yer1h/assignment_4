@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import java.util.*;
+
 public class BreadthFirstSearch<V> {
     private final Map<Vertex<V>, Boolean> visited = new HashMap<>();
 
-    public void bfs(WeightedGraph<V> graph, Vertex<V> start) {
+    public void bfs(MyGraph<V> graph, Vertex<V> start) {
         Queue<Vertex<V>> queue = new LinkedList<>();
         queue.add(start);
         visited.put(start, true);
