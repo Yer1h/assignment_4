@@ -1,35 +1,27 @@
-public class Vertex {
-    private String id;
-    private String name;
+import java.util.HashMap;
+import java.util.Map;
 
-    public Vertex(String id, String name) {
-        this.id = id;
-        this.name = name;
+public class Vertex<V> {
+    private V data;
+    private Map<Vertex<V>, Double> adjacentVertices = new HashMap<>();
+
+    public Vertex(V data) {
+        this.data = data;
     }
 
-    public String getId() {
-        return id;
+    public V getData() {
+        return data;
     }
 
-    public String getName() {
-        return name;
+    public void setData(V data) {
+        this.data = data;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Vertex vertex = (Vertex) obj;
-        return id.equals(vertex.id);
+    public Map<Vertex<V>, Double> getAdjacentVertices() {
+        return adjacentVertices;
     }
 
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return name;
+    public void addAdjacentVertex(Vertex<V> destination, double weight) {
+        adjacentVertices.put(destination, weight);
     }
 }

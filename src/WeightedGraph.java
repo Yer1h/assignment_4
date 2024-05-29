@@ -1,18 +1,22 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
-public class WeightedGraph {
-    private final Map<Vertex, List<Edge>> adjVertices = new HashMap<>();
+public class WeightedGraph<V> {
+    private final Map<Vertex<V>, List<Edge<V>>> map = new HashMap<>();
 
-    public void addVertex(Vertex vertex) {
-        adjVertices.putIfAbsent(vertex, new ArrayList<>());
+    public void addVertex(Vertex<V> vertex) {
+        map.putIfAbsent(vertex, new ArrayList<>());
     }
 
-    public void addEdge(Vertex vertex1, Vertex vertex2, int weight) {
-        adjVertices.get(vertex1).add(new Edge(vertex2, weight));
-        adjVertices.get(vertex2).add(new Edge(vertex1, weight));
+    public void addEdge(Vertex<V> source, Vertex<V> destination, double weight) {
+        map.get(source).add(new Edge<>(source, destination, weight));
+        source.addAdjacentVertex(destination, weight);
+        destination.addAdjacentVertex(source, weight); // If the graph is undirected
     }
 
-    public List<Edge> getAdjVertices(Vertex vertex) {
-        return adjVertices.get(vertex);
+    public List<Edge<V>> getAdjVertices(Vertex<V> vertex) {
+        return map.get(vertex);
     }
 }
