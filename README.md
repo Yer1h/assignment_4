@@ -1,4 +1,5 @@
 Graph Algorithms Implementation in Java
+
 This Java project implements several graph algorithms including Breadth-First Search (BFS), Depth-First Search (DFS), and Dijkstra's algorithm for finding the shortest path in a weighted graph. The project is divided into multiple classes, each responsible for a specific task.
 
 Classes Overview:
@@ -26,7 +27,9 @@ Add vertices using the addVertex method.
 Add edges using the addEdge or addBidirectionalEdge methods.
 Instantiate BFS, DFS, or DijkstraSearch objects with the graph and desired starting vertex.
 Call the respective algorithm methods (bfs, dfs, or dijkstra).
+
 Example:
+
 public static void main(String[] args) {
     MyGraph<String> graph = new MyGraph<>();
 
@@ -48,6 +51,7 @@ public static void main(String[] args) {
     DijkstraSearch<String> dijkstra = new DijkstraSearch<>();
     dijkstra.dijkstra(graph, newYork);
 }
+
 Notes:
 *This project provides basic implementations of graph algorithms. For large graphs or performance-critical applications, consider optimizations or alternative algorithms.
 *Ensure proper error handling and input validation when using the provided classes and methods.
